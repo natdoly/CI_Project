@@ -23,7 +23,8 @@ public class Main {
 		// ApplicationContext ctx = new ClassPathXmlApplicationContext("routing.xml");
 
 		// Routing Advanced
-		ApplicationContext ctx = new ClassPathXmlApplicationContext("routingAdvanced.xml");
+		//ApplicationContext ctx = new ClassPathXmlApplicationContext("routingAdvanced.xml");
+		System.out.println("coucou");
 	}
 
 }
