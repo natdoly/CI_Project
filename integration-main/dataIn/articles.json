@@ -1,6 +1,6 @@
 [
   {
-    "id" : 1,
+    "id": 1,
     "name": "T-shirt",
     "color": "Blue",
     "size": "M",
@@ -9,7 +9,7 @@
     "discount": null
   },
   {
-    "id" : 2,
+    "id": 2,
     "name": "Jeans",
     "color": "Black",
     "size": "L",
@@ -18,7 +18,7 @@
     "discount": null
   },
   {
-    "id" : 3,
+    "id": 3,
     "name": "Dress",
     "color": "Red",
     "size": "S",
@@ -27,7 +27,7 @@
     "discount": null
   },
   {
-    "id" : 4,
+    "id": 4,
     "name": "Hoodie",
     "color": "Blue",
     "size": "XL",
@@ -36,7 +36,7 @@
     "discount": null
   },
   {
-    "id" : 5,
+    "id": 5,
     "name": "Skirt",
     "color": "Green",
     "size": "M",
