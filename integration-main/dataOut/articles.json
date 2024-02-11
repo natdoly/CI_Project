@@ -3,17 +3,17 @@
     "name": "Chemise",
     "color": "Bleu",
     "size": "M",
-    "price": 29.99,
+    "price": 26.991,
     "soldOut": false,
-    "discount": null
+    "discount": 0.1
   },
   {
     "name": "Pantalon",
     "color": "Noir",
     "size": "L",
-    "price": 39.99,
+    "price": 35.991,
     "soldOut": false,
-    "discount": null
+    "discount": 0.1
   },
   {
     "name": "Robe",
@@ -27,9 +27,9 @@
     "name": "Chaussures",
     "color": "Marron",
     "size": "42",
-    "price": 59.99,
+    "price": 53.991,
     "soldOut": false,
-    "discount": null
+    "discount": 0.1
   },
   {
     "name": "Chemise",

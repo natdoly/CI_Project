@@ -1,17 +1,17 @@
-package test;
+package service;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Article {
     private String name;
     private String color;
     private String size;
     private double price;
     private boolean soldOut;
-
+    private Float discount;
 }
