@@ -1,5 +1,7 @@
 package test;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -8,7 +10,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 @SpringBootApplication
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws JsonProcessingException {
 
 		// ApplicationContext: On retrouve bien le contenu de chaque fichier dans la console
 		// ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
@@ -23,7 +25,18 @@ public class Main {
 		// ApplicationContext ctx = new ClassPathXmlApplicationContext("routing.xml");
 
 		// Routing Advanced
-		ApplicationContext ctx = new ClassPathXmlApplicationContext("routingAdvanced.xml");
+		//ApplicationContext ctx = new ClassPathXmlApplicationContext("routingAdvanced.xml");
+
+		// simple test to jackson
+		/*ObjectMapper objectMapper = new ObjectMapper();
+		Article art = new Article();
+		art.setColor("green");
+		art.setSize("M");
+
+		String jsonInString = objectMapper.writeValueAsString(art);
+
+		System.out.println("ici "+ jsonInString);*/
+
 	}
 
 }
