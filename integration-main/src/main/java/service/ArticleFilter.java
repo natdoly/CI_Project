@@ -1,8 +1,6 @@
 package service;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
@@ -15,28 +13,32 @@ import java.util.stream.Collectors;
 @Component
 public class ArticleFilter {
 
-    public void filterAndSaveBlueArticles(Message<File> message) throws JsonParseException, JsonMappingException, IOException {
+    // Function to check whether the item file contains blue items
+    public boolean containsBlueArticles(Message<File> message) throws IOException {
         File articlesFile = message.getPayload();
 
+        // Convert JSON file into object list Article
         ObjectMapper objectMapper = new ObjectMapper();
-        List<Article> articles = objectMapper.readValue(articlesFile, new TypeReference<List<Article>>(){});
+        List<Article> articles = objectMapper.readValue(articlesFile, new TypeReference<List<Article>>() {});
 
-        // Filtrage des articles bleus
-        List<Article> blueArticles = articles.stream()
-                .filter(article -> "Blue".equals(article.getColor()))
-                .collect(Collectors.toList());
-
-        // Enregistrement de la liste d'articles bleus dans un fichier JSON
-        saveArticlesToFile(blueArticles);
-       
+        // Checks if at least one item is "Blue"
+        return articles.stream().anyMatch(article -> "Blue".equals(article.getColor()));
     }
 
-    private void saveArticlesToFile(List<Article> articles) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(new File("dataOut/blue_articles.json"), articles);
-        } catch (IOException e) {
-            e.printStackTrace(); // Gérez les erreurs d'entrée/sortie ici
-        }
+    // Function that retrieves blue items from the input file and saves them in an output file
+    public List<Article> saveBlueArticlesToFile(Message<File> message) throws IOException {
+        File articlesFile = message.getPayload();
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<Article> articles = objectMapper.readValue(articlesFile, new TypeReference<List<Article>>() {});
+
+        return articles.stream()
+                .filter(article -> "Blue".equals(article.getColor()))
+                .collect(Collectors.toList());
+    }
+
+    // Function to convert List<Article> to JSON string
+    public String convertArticlesToJson(List<Article> articles) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(articles);
     }
 }
