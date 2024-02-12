@@ -16,7 +16,7 @@ public class Main {
 		// ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
 		
 		// Filtrage
-		// ApplicationContext ctx = new ClassPathXmlApplicationContext("filtering.xml");
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("filtering.xml");
 
 		// ServiceActivator: Comme trois fichiers en entrée, alors trois fichiers crées en sortie et chacun contient le contenu de la chaine de caractères. 
 		// ApplicationContext ctx = new ClassPathXmlApplicationContext("serviceActivator.xml");
