@@ -1,51 +1,16 @@
-# CI_Project
+# Cloud Integration
 Nathan DOLY - Lisa RAOUL - M2 Digital transformation - Cloud Integration Project
 
-**Contexte :**
-- Eshop (boutique en ligne de vêtements) avec des articles soldés et non soldés 
+# Context
 
-**Gestion des données :** 2 propositions
-  - 1 fichier avec articles non soldés et 1 autre avec articles soldés
-  - 1 fichier avec tous les articles soldés / non soldés, 1 fichier avec les articles non soldés et 1 autre avec articles soldés
+Our chosen scenario was the development of an Eshop, an online clothing store featuring both discounted and non-discounted items.
 
-**Fichiers de notre projet :**
+# What is inside ?
 
-sqlDatabase.xml
-1. gateway
-2. database (H2)
-3. logger
+In this project, which represents an eshop, we used different integration patterns to carry out various operations on our data from the clothing store.
 
-But : aggréger les articles soldés par catégorie (par exemple, les articles életroménagers par consommation electrique; les vetements par couleurs etc)
+# How to launch the project ?
 
-filtering.xml
-1. input file adapter
-2. channel
-3. message filter 
-4. adding headers
-5. logging channel
+All you have to do is execute the function you want in main.java, uncomment it and see the result (depending on whether the result is in a file or not). 
+For more information, please read the report provided.
 
-But : filtrer les vêtements en fonction d'une couleur en particulier
-
-
-serviceActivator.xml
-1. input file adapter
-2. file to string transformer
-3. channel
-4. service activator (java program)
-5. output file adapter
-
-But : au bout d'un certain temps, 2 minutes, on passe tous les vêtements soldés en non soldés et inversement
-
-
-routingAdvanced.xml
-1. input file adapter
-2. json to object transformer
-3. channel
-4. router:
-  - service activator
-	- channel
-5. aggregator:
-6. outbound file adapter
-7. json conversion
-
-But : on utilise un agregator pour rassembler dans un même fichier les vêtements soldés et non soldés
