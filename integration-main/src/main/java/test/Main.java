@@ -2,6 +2,7 @@ package test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -24,7 +25,7 @@ public class Main {
 		// ApplicationContext ctx = new ClassPathXmlApplicationContext("filtering.xml");
 
 		// ServiceActivator: prend le json en entrée puis applique des discounts sur les articles en non soldout et ressort le resultat dans dataout avec les modification appliquées
-		// ApplicationContext ctx = new ClassPathXmlApplicationContext("serviceActivator.xml");
+		//ApplicationContext ctx = new ClassPathXmlApplicationContext("serviceActivator.xml");
 	
 		// Routing basic
 		//ApplicationContext ctx = new ClassPathXmlApplicationContext("routing.xml");
@@ -32,7 +33,10 @@ public class Main {
 		// Routing Advanced
 		//ApplicationContext ctx = new ClassPathXmlApplicationContext("routingAdvanced.xml");
 
+		// SQL DATABASE
+		//SpringApplication.run(ArticleService.class, args);
 
+		ApplicationContext ctx= new ClassPathXmlApplicationContext("sqlDatabase.xml");
 	}
 
 }
