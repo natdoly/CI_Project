@@ -1,42 +1,47 @@
 [
   {
-    "name": "Chemise",
-    "color": "Bleu",
+    "id" : 1,
+    "name": "T-shirt",
+    "color": "Blue",
     "size": "M",
-    "price": 29.99,
+    "price": 15.99,
     "soldOut": false,
     "discount": null
   },
   {
-    "name": "Pantalon",
-    "color": "Noir",
+    "id" : 2,
+    "name": "Jeans",
+    "color": "Black",
     "size": "L",
+    "price": 29.99,
+    "soldOut": true,
+    "discount": null
+  },
+  {
+    "id" : 3,
+    "name": "Dress",
+    "color": "Red",
+    "size": "S",
     "price": 39.99,
     "soldOut": false,
     "discount": null
   },
   {
-    "name": "Robe",
-    "color": "Rouge",
-    "size": "S",
+    "id" : 4,
+    "name": "Hoodie",
+    "color": "Blue",
+    "size": "XL",
     "price": 49.99,
-    "soldOut": true,
-    "discount": null
-  },
-  {
-    "name": "Chaussures",
-    "color": "Marron",
-    "size": "42",
-    "price": 59.99,
     "soldOut": false,
     "discount": null
   },
   {
-    "name": "Chemise",
-    "color": "Vert",
-    "size": "42",
-    "price": 9999.99,
-    "soldOut": true,
+    "id" : 5,
+    "name": "Skirt",
+    "color": "Green",
+    "size": "M",
+    "price": 24.99,
+    "soldOut": false,
     "discount": null
   }
 ]

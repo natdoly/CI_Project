@@ -22,7 +22,7 @@ public class ArticleService {
                     double currentPrice = article.getPrice();
                     double discountPrice = currentPrice * 0.9;
 
-                    Article discountArticle = new Article(article.getName(), article.getColor(), article.getSize(), discountPrice, false, 0.1F);
+                    Article discountArticle = new Article(article.getId(), article.getName(), article.getColor(), article.getSize(), discountPrice, false, 0.1F);
                     articlesOut.add(discountArticle);
 
                 } else {

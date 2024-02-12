@@ -34,7 +34,7 @@
       output-channel="outChannel"
       method="create"
     >
-      <bean class="test.Transactions"/>
+      <bean class="test.tp.Transactions"/>
     </int:service-activator>
 
     <int:channel id="outChannel"></int:channel>

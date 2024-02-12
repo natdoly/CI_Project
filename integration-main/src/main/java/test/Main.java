@@ -24,7 +24,7 @@ public class Main {
 		// ApplicationContext ctx = new ClassPathXmlApplicationContext("filtering.xml");
 
 		// ServiceActivator: prend le json en entrée puis applique des discounts sur les articles en non soldout et ressort le resultat dans dataout avec les modification appliquées
-		// ApplicationContext ctx = new ClassPathXmlApplicationContext("serviceActivator.xml");
+		 ApplicationContext ctx = new ClassPathXmlApplicationContext("serviceActivator.xml");
 	
 		// Routing basic
 		//ApplicationContext ctx = new ClassPathXmlApplicationContext("routing.xml");
