@@ -6,7 +6,7 @@
     "size": "M",
     "price": 15.99,
     "soldOut": false,
-    "discount": 0.0
+    "discount": null
   },
   {
     "id" : 2,
@@ -15,7 +15,7 @@
     "size": "L",
     "price": 29.99,
     "soldOut": true,
-    "discount": 0.2
+    "discount": null
   },
   {
     "id" : 3,
@@ -24,7 +24,7 @@
     "size": "S",
     "price": 39.99,
     "soldOut": false,
-    "discount": 0.0
+    "discount": null
   },
   {
     "id" : 4,
@@ -33,7 +33,7 @@
     "size": "XL",
     "price": 49.99,
     "soldOut": false,
-    "discount": 0.1
+    "discount": null
   },
   {
     "id" : 5,
@@ -42,6 +42,6 @@
     "size": "M",
     "price": 24.99,
     "soldOut": false,
-    "discount": 0.0
+    "discount": null
   }
 ]
