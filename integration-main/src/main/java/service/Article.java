@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Article {
+    private int id;
     private String name;
     private String color;
     private String size;

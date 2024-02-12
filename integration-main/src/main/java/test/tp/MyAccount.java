@@ -1,4 +1,4 @@
-package test;
+package test.tp;
 
 public class MyAccount {
   private String name;

@@ -16,7 +16,7 @@ public class Main {
 		// ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
 		
 		// Filtrage
-		ApplicationContext ctx = new ClassPathXmlApplicationContext("filtering.xml");
+		//ApplicationContext ctx = new ClassPathXmlApplicationContext("filtering.xml");
 
 		// ServiceActivator: Comme trois fichiers en entrée, alors trois fichiers crées en sortie et chacun contient le contenu de la chaine de caractères. 
 		// ApplicationContext ctx = new ClassPathXmlApplicationContext("serviceActivator.xml");
@@ -27,16 +27,8 @@ public class Main {
 		// Routing Advanced
 		//ApplicationContext ctx = new ClassPathXmlApplicationContext("routingAdvanced.xml");
 
-		// simple test to jackson
-		/*ObjectMapper objectMapper = new ObjectMapper();
-		Article art = new Article();
-		art.setColor("green");
-		art.setSize("M");
-
-		String jsonInString = objectMapper.writeValueAsString(art);
-
-		System.out.println("ici "+ jsonInString);*/
-
+		// SQL Database
+		//ApplicationContext ctx = new ClassPathXmlApplicationContext("sqlDatabase.xml");
 	}
 
 }

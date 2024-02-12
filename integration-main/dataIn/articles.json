@@ -1,42 +1,47 @@
 [
   {
+    "id": 1,
     "name": "T-shirt",
     "color": "Blue",
     "size": "M",
     "price": 15.99,
     "soldOut": false,
-    "discount": 0.0
+    "discount": null
   },
   {
+    "id": 2,
     "name": "Jeans",
     "color": "Black",
     "size": "L",
     "price": 29.99,
     "soldOut": true,
-    "discount": 0.2
+    "discount": null
   },
   {
+    "id": 3,
     "name": "Dress",
     "color": "Red",
     "size": "S",
     "price": 39.99,
     "soldOut": false,
-    "discount": 0.0
+    "discount": null
   },
   {
+    "id": 4,
     "name": "Hoodie",
     "color": "Blue",
     "size": "XL",
     "price": 49.99,
     "soldOut": false,
-    "discount": 0.1
+    "discount": null
   },
   {
+    "id": 5,
     "name": "Skirt",
     "color": "Green",
     "size": "M",
     "price": 24.99,
     "soldOut": false,
-    "discount": 0.0
+    "discount": null
   }
 ]
