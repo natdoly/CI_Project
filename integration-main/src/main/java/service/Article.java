@@ -1,4 +1,4 @@
-package test;
+package service;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,5 +13,5 @@ public class Article {
     private String size;
     private double price;
     private boolean soldOut;
-
+    private float discount;
 }
