@@ -10,32 +10,41 @@
            http://www.springframework.org/schema/integration/file
            http://www.springframework.org/schema/integration/file/spring-integration-file-5.1.xsd">
 
-  <int-file:inbound-channel-adapter
-    channel="channelEntree" 
-    directory="dataIn"
-    filename-pattern="account.txt">
-      <int:poller id="poller" fixed-delay="1000" />
-  </int-file:inbound-channel-adapter>
+    <int-file:inbound-channel-adapter 
+        directory="dataIn" 
+        channel="inputChannel" 
+        filename-pattern="articles.json">
+        <int:poller fixed-delay="1000" />
+    </int-file:inbound-channel-adapter>  
 
-  <int:channel id="channelEntree"></int:channel>
+    <int:channel id="inputChannel" />
 
-  <int-file:file-to-string-transformer 
-    input-channel="channelEntree" 
-    output-channel="stringChannel"
-    delete-files="false" 
-    charset="UTF-8"/>
-  
-  <int:channel id="stringChannel"></int:channel>
+    <!-- Filter to check for blue items -->
+    <int:filter 
+        input-channel="inputChannel" 
+        output-channel="intermediateChannel"
+        ref="articleFilterBean" 
+        method="containsBlueArticles" />    
 
-  <!-- Message filter : si le message contient la chaine de caractères alors le message passse -->
-  <int:filter 
-    input-channel="stringChannel" 
-    output-channel="channelSortie" 
-    expression="payload.equals('myName')"/>
+    <int:channel id="intermediateChannel" />
 
-  <!-- Cannal sortie -->
-  <int:channel id="channelSortie"></int:channel>
-  
-  <int:logging-channel-adapter id="channelSortie" level="INFO"/>
+    <!-- Service activator for saving filtered blue items -->
+    <int:service-activator 
+        input-channel="intermediateChannel" 
+        output-channel="transformedChannel"
+        ref="articleFilterBean" 
+        method="saveBlueArticlesToFile" />
 
+    <bean id="articleFilterBean" class="service.ArticleFilter" />
+
+    <!-- Transformer to convert List<Article> to JSON string -->
+    <int:transformer 
+        input-channel="transformedChannel" 
+        output-channel="outputChannel"
+        expression="@articleFilterBean.convertArticlesToJson(payload)" />
+
+    <int:channel id="outputChannel" />
+
+    <!-- Output channel adapter for writing JSON messages -->
+    <int-file:outbound-channel-adapter directory="dataOut\blueArticles" channel="outputChannel" />
 </beans>
