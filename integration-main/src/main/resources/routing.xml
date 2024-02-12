@@ -20,7 +20,7 @@
     <!-- Json to object transformer : on travaille sur une instance myAccount -->
     <int:json-to-object-transformer
       input-channel="channelJsonToObject" output-channel="channelRouter" 
-      type="test.MyAccount"
+      type="test.tp.MyAccount"
     ></int:json-to-object-transformer>    
 
     <int:channel id="channelRouter"></int:channel>
@@ -36,7 +36,7 @@
       input-channel="serviceActivatorChannel" output-channel="objectToJsonTransformer1" 
       ref="serviceID" 
       method="myService"/>
-    <bean id="serviceID" class="test.AccountService"/>
+    <bean id="serviceID" class="test.tp.AccountService"/>
 
     <int:channel id="objectToJsonTransformer1"></int:channel>
 

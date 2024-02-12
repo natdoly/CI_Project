@@ -34,9 +34,7 @@ public class Main {
 		//ApplicationContext ctx = new ClassPathXmlApplicationContext("routingAdvanced.xml");
 
 		// SQL DATABASE
-		//SpringApplication.run(ArticleService.class, args);
-
-		ApplicationContext ctx= new ClassPathXmlApplicationContext("sqlDatabase.xml");
+		//ApplicationContext ctx= new ClassPathXmlApplicationContext("sqlDatabase.xml");
 	}
 
 }
