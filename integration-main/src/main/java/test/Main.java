@@ -37,6 +37,5 @@ public class Main {
 		//ApplicationContext ctx= new ClassPathXmlApplicationContext("sqlDatabase.xml");
 
 	}
-
 }
  

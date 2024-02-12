@@ -8,61 +8,60 @@
            http://www.springframework.org/schema/integration
            http://www.springframework.org/schema/integration/spring-integration-5.1.xsd
            http://www.springframework.org/schema/integration/file
-           http://www.springframework.org/schema/integration/file/spring-integration-file-5.1.xsd">   
+           http://www.springframework.org/schema/integration/file/spring-integration-file-5.1.xsd">
 
+    <!-- Inbound file adapter -->
     <int-file:inbound-channel-adapter
-        channel="channelJsonToObject"
-        directory="dataIn"
-        filename-pattern="account.json">
-      <int:poller id="poller" fixed-delay="1000" />
+            channel="channelJSonToObject"
+            directory="dataIn"
+            filename-pattern="articles.json">
+        <int:poller id="poller" fixed-delay="1000"/>
     </int-file:inbound-channel-adapter>
 
-    <!-- Json to object transformer : on travaille sur une instance myAccount -->
-    <int:json-to-object-transformer
-      input-channel="channelJsonToObject" output-channel="channelRouter" 
-      type="test.tp.MyAccount"
-    ></int:json-to-object-transformer>    
+    <!-- Channel for initial JSON processing -->
+    <int:channel id="channelJSonToObject"></int:channel>
 
-    <int:channel id="channelRouter"></int:channel>
+    <!-- Service Activator for processing articles -->
+    <int:service-activator input-channel="channelJSonToObject"
+                           output-channel="routerChannel"
+                           ref="articleService"
+                           method="processArticles"/>
+    <bean id="articleService" class="service.ArticleService"/>
 
-    <!-- Routeur : service activator et channel -->
-    <int:recipient-list-router id="customRouter" input-channel="channelRouter">
-      <int:recipient channel="serviceActivatorChannel"/>
-      <int:recipient channel="channel2"/>
+    <!-- Channel for routing -->
+    <int:channel id="routerChannel"></int:channel>
+
+    <!-- Recipient List Router for sold and unsold articles -->
+    <int:recipient-list-router input-channel="routerChannel">
+        <int:recipient channel="soldChannel" selector-expression="headers['articleType'] == 'sold'"/>
+        <int:recipient channel="unsoldChannel" selector-expression="headers['articleType'] == 'unsold'"/>
     </int:recipient-list-router>
+
+    <!-- Channel for processing and converting sold articles to JSON -->
+    <int:channel id="soldChannel"></int:channel>
     
-    <!-- ServiceActivator : ref permet de faire référence à un composant binaire externe -->
-    <int:service-activator 
-      input-channel="serviceActivatorChannel" output-channel="objectToJsonTransformer1" 
-      ref="serviceID" 
-      method="myService"/>
-    <bean id="serviceID" class="test.tp.AccountService"/>
+    <int:object-to-json-transformer id="soldTransformer"
+                                    input-channel="soldChannel"
+                                    output-channel="soldArticlesToJson"/>
 
-    <int:channel id="objectToJsonTransformer1"></int:channel>
-
-    <!-- Le fichier de sortie doit contenir du JSON, 
-    Donc l'objet JAVA doit formatter les données en JSON -->
-    <int:object-to-json-transformer 
-      id="t1" 
-      input-channel="objectToJsonTransformer1" output-channel="filesOut1">
-    </int:object-to-json-transformer>
-
-    <int:channel id="filesOut1"></int:channel>
-
-    <!-- Ecriture dans un fichier -->
-    <int-file:outbound-channel-adapter
-      id="f1" 
-      channel="filesOut1"
-      directory="dataOut/test1"/>
+    <int:channel id="soldArticlesToJson"></int:channel>
     
-    <int:channel id="channel2"></int:channel>
+    <int-file:outbound-channel-adapter id="soldArticlesFileAdapter"
+                                       channel="soldArticlesToJson"
+                                       directory="dataOut/soldArticles"
+                                       delete-source-files="false"/>  
+    
+    <!-- Channel for processing and converting unsold articles to JSON -->
+    <int:channel id="unsoldChannel"></int:channel>
 
-    <int:object-to-json-transformer id="t2" input-channel="channel2" output-channel="filesOut2"></int:object-to-json-transformer>
+    <int:object-to-json-transformer id="unsoldTransformer"
+                                    input-channel="unsoldChannel"
+                                    output-channel="unsoldArticlesToJson"/>
+  
+    <int:channel id="unsoldArticlesToJson"></int:channel>
 
-    <int:channel id="filesOut2"></int:channel>
-
-    <!-- Ecriture dans un autre fichier -->
-    <int-file:outbound-channel-adapter id="f2" channel="filesOut2"
-    directory="dataOut/test2"/>
-
+    <int-file:outbound-channel-adapter id="unsoldArticlesFileAdapter"
+                                    channel="unsoldArticlesToJson"
+                                    directory="dataOut/unsoldArticles"
+                                    delete-source-files="false"/>     
 </beans>

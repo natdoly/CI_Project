@@ -8,43 +8,67 @@
            http://www.springframework.org/schema/integration
            http://www.springframework.org/schema/integration/spring-integration-5.1.xsd
            http://www.springframework.org/schema/integration/file
-           http://www.springframework.org/schema/integration/file/spring-integration-file-5.1.xsd">   
+           http://www.springframework.org/schema/integration/file/spring-integration-file-5.1.xsd"> 
 
+    <!-- Inbound file adapter -->
     <int-file:inbound-channel-adapter
-        channel="channelEntree"
-        directory="dataIn"
-        filename-pattern="account.json">
-      <int:poller id="poller" fixed-delay="1000" />
+            channel="channelJSonToObject"
+            directory="dataIn"
+            filename-pattern="articles.json">
+        <int:poller id="poller" fixed-delay="1000"/>
     </int-file:inbound-channel-adapter>
 
-    <int:json-to-object-transformer
-      input-channel="channelEntree" output-channel="mainChannel" 
-      type="test.tp.MyAccount"
-    ></int:json-to-object-transformer>    
+    <!-- Channel for initial JSON processing -->
+    <int:channel id="channelJSonToObject"></int:channel>
 
-    <int:channel id="mainChannel"></int:channel>
+    <!-- Service Activator for processing articles -->
+    <int:service-activator input-channel="channelJSonToObject"
+                           output-channel="routerChannel"
+                           ref="articleService"
+                           method="processArticles"/>
+    <bean id="articleService" class="service.ArticleService"/>
 
-    <int:recipient-list-router id="customRouter" input-channel="mainChannel">
-      <int:recipient channel="serviceActivatorChannel"/>
-      <int:recipient channel="aggregatorChannel"/>
+    <!-- Channel for routing -->
+    <int:channel id="routerChannel"></int:channel>
+
+    <!-- Recipient List Router for sold and unsold articles -->
+    <int:recipient-list-router input-channel="routerChannel">
+        <int:recipient channel="soldChannel" selector-expression="headers['articleType'] == 'sold'"/>
+        <int:recipient channel="unsoldChannel" selector-expression="headers['articleType'] == 'unsold'"/>
     </int:recipient-list-router>
+
+    <!-- Channel for sold articles -->
+    <int:channel id="soldChannel"></int:channel>
     
-    <int:service-activator input-channel="serviceActivatorChannel" output-channel="aggregatorChannel" ref="serviceID" method="myService"/>
-    <bean id="serviceID" class="test.tp.AccountService"/>
+    <!-- Transformer to convert sold articles to JSON -->
+    <int:object-to-json-transformer id="soldTransformer"
+                                    input-channel="soldChannel"
+                                    output-channel="finalSoldJsonOutputChannel"/>
 
-    <!-- Agregator -->
-    <int:channel id="aggregatorChannel"></int:channel>
+    <!-- Channel for final converted sold articles -->
+    <int:channel id="finalSoldJsonOutputChannel"></int:channel>
+    
+    <!-- Aggregator for sold articles -->
+    <int:aggregator input-channel="finalSoldJsonOutputChannel"
+                    output-channel="aggregatedSoldArticles"
+                    correlation-strategy-expression="1"
+                    release-strategy-expression="size() >= 1"/>
 
-    <int:aggregator 
-      id="myAggregator"
-      input-channel="aggregatorChannel"
-      output-channel="outputChannel"
-      correlation-strategy-expression="payload.name"
-      release-strategy-expression="size() == 2">
-    </int:aggregator>
+    <!-- Channel for aggregated sold articles -->
+    <int:channel id="aggregatedSoldArticles"></int:channel>
 
-    <int:channel id="outputChannel"></int:channel>
+    <int:logging-channel-adapter channel="aggregatedSoldArticles" level="INFO" /> 
+    
+    <!-- Channel for processing and converting unsold articles to JSON -->
+    <int:channel id="unsoldChannel"></int:channel>
 
-    <int:logging-channel-adapter channel="outputChannel" level="INFO" /> 
+    <!-- Transformer to convert unsold articles to JSON -->
+    <int:object-to-json-transformer id="unsoldTransformer"
+                                    input-channel="unsoldChannel"
+                                    output-channel="unsoldArticlesToJson"/>
+  
+    <!-- Channel for converted unsold articles -->
+    <int:channel id="unsoldArticlesToJson"></int:channel>
 
+    <int:logging-channel-adapter channel="unsoldArticlesToJson" level="INFO" /> 
 </beans>
