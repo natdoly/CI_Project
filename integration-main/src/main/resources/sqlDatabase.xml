@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-file="http://www.springframework.org/schema/integration/file"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:int-jdbc="http://www.springframework.org/schema/integration/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/integration
+                           http://www.springframework.org/schema/integration/spring-integration-5.1.xsd
+                           http://www.springframework.org/schema/integration/file
+                           http://www.springframework.org/schema/integration/file/spring-integration-file-5.1.xsd
+                           http://www.springframework.org/schema/jdbc
+                           http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+                           http://www.springframework.org/schema/integration/jdbc
+                           http://www.springframework.org/schema/integration/jdbc/spring-integration-jdbc-5.1.xsd">
+
+    <!-- Configuration du serveur H2 -->
+    <bean id="h2Server" class="org.h2.tools.Server" factory-method="createTcpServer" init-method="start" destroy-method="stop">
+        <constructor-arg value="-tcp,-tcpAllowOthers,-tcpPort,9092" />
+    </bean>
+
+    <!-- Configuration de la source de données -->
+    <jdbc:embedded-database id="dataSource" type="H2">
+        <jdbc:script location="classpath:schema.sql"/>
+    </jdbc:embedded-database>
+
+    <!-- Définition de la passerelle -->
+    <int:gateway id="myGateway" service-interface="service.Mygateway">
+        <int:method name="processFile" request-channel="fileInputChannel"/>
+    </int:gateway>
+
+    <!-- Canal d'entrée pour lire les fichiers JSON -->
+    <int:channel id="fileInputChannel"/>
+
+    <int-file:inbound-channel-adapter id="fileReaderAdapter"
+                                      channel="fileInputChannel"
+                                      directory="dataIn"
+                                      filename-pattern="*.json">
+        <int:poller fixed-delay="5000"/>
+    </int-file:inbound-channel-adapter>
+
+    <int:channel id="transformedChannel"/>
+
+    <int:json-to-object-transformer input-channel="fileInputChannel"
+                                    output-channel="transformedChannel"
+                                    type="service.Article[]"/>
+
+    <int:channel id="jdbcChannel"/>
+
+    <int:splitter input-channel="transformedChannel"
+                  output-channel="jdbcChannel"/>
+
+    <int-jdbc:outbound-channel-adapter channel="jdbcChannel"
+                                       data-source="dataSource"
+                                       query="INSERT INTO article (name, color, size, price, sold_out, discount) VALUES (:payload.name, :payload.color, :payload.size, :payload.price, :payload.soldOut, :payload.discount)">
+    </int-jdbc:outbound-channel-adapter>
+    <int:logging-channel-adapter id="jdbcChannel" level="INFO"/> <!--sert juste à ecrire dans la console-->
+
+</beans>
