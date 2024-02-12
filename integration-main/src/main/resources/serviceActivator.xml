@@ -10,10 +10,10 @@
                            http://www.springframework.org/schema/integration/file
                            http://www.springframework.org/schema/integration/file/spring-integration-file.xsd">
 
-    <!-- Définition du canal d'entrée qui reçoit des fichiers -->
+    <!-- Definition of the input channel that receives files -->
     <int:channel id="fileInputChannel"/>
 
-    <!-- Adapter qui surveille un répertoire pour les nouveaux fichiers JSON -->
+    <!-- Adapter that verify a directory for new JSON files -->
     <int-file:inbound-channel-adapter id="fileReaderAdapter"
                                       channel="fileInputChannel"
                                       directory="dataIn"
@@ -21,19 +21,19 @@
         <int:poller fixed-delay="2000"/>
     </int-file:inbound-channel-adapter>
 
-    <!-- Service Activator qui appelle la méthode de traitement sur le fichier -->
+    <!-- Service Activator that calls the processing method on the file -->
     <int:service-activator input-channel="fileInputChannel"
                            output-channel="fileOutputChannel"
                            ref="articleService"
                            method="changeArticleDiscount"/>
 
-    <!-- Définition du service qui contient la logique de traitement -->
+    <!-- Definition of the service that contains the processing logic -->
     <bean id="articleService" class="service.ArticleService"/>
 
-    <!-- Canal de sortie pour les articles transformés -->
+    <!-- Output channel for the transformed articles -->
     <int:channel id="fileOutputChannel"/>
 
-    <!-- Exemple d'adaptateur de canal de sortie pour écrire des fichiers, si nécessaire pour une étape ultérieure -->
+    <!-- Outbound channel adapter for writing file -->
     <int-file:outbound-channel-adapter id="fileWriterAdapter"
                                        channel="fileOutputChannel"
                                        directory="dataOut"/>

@@ -16,22 +16,22 @@
                            http://www.springframework.org/schema/integration/jdbc
                            http://www.springframework.org/schema/integration/jdbc/spring-integration-jdbc-5.1.xsd">
 
-    <!-- Configuration du serveur H2 -->
+    <!-- H2 server configuration-->
     <bean id="h2Server" class="org.h2.tools.Server" factory-method="createTcpServer" init-method="start" destroy-method="stop">
         <constructor-arg value="-tcp,-tcpAllowOthers,-tcpPort,9092" />
     </bean>
 
-    <!-- Configuration de la source de données -->
+    <!-- Configuring data source -->
     <jdbc:embedded-database id="dataSource" type="H2">
         <jdbc:script location="classpath:schema.sql"/>
     </jdbc:embedded-database>
 
-    <!-- Définition de la passerelle -->
+    <!-- Gateway definition -->
     <int:gateway id="myGateway" service-interface="service.Mygateway">
         <int:method name="processFile" request-channel="fileInputChannel"/>
     </int:gateway>
 
-    <!-- Canal d'entrée pour lire les fichiers JSON -->
+    <!-- Input channel for reading JSON files -->
     <int:channel id="fileInputChannel"/>
 
     <int-file:inbound-channel-adapter id="fileReaderAdapter"
@@ -41,21 +41,28 @@
         <int:poller fixed-delay="5000"/>
     </int-file:inbound-channel-adapter>
 
+    <!-- Channel for transformed data -->
     <int:channel id="transformedChannel"/>
 
     <int:json-to-object-transformer input-channel="fileInputChannel"
                                     output-channel="transformedChannel"
                                     type="service.Article[]"/>
 
+    <!-- Channel for JDBC operations -->
     <int:channel id="jdbcChannel"/>
 
+    <!-- Splitter to divide the data -->
     <int:splitter input-channel="transformedChannel"
                   output-channel="jdbcChannel"/>
 
+    <!-- Adapter to insert data into database via JDBC -->
     <int-jdbc:outbound-channel-adapter channel="jdbcChannel"
                                        data-source="dataSource"
-                                       query="INSERT INTO article (name, color, size, price, sold_out, discount) VALUES (:payload.name, :payload.color, :payload.size, :payload.price, :payload.soldOut, :payload.discount)">
+                                       query="INSERT INTO article (name, color, size, price, sold_out, discount) VALUES (:payload.name, :payload.color, :payload.size, :payload.price, :payload.soldOut, :payload.discount)"
+    >
     </int-jdbc:outbound-channel-adapter>
-    <int:logging-channel-adapter id="jdbcChannel" level="INFO"/> <!--sert juste à ecrire dans la console-->
+
+    <!-- Logging adapter to log JDBC operations to console -->
+    <int:logging-channel-adapter id="jdbcChannel" level="INFO"/>
 
 </beans>

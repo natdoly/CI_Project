@@ -14,6 +14,11 @@ import java.util.List;
 @Service
 public class ArticleService {
 
+    /**
+     * Changes the discount of articles based on their availability.
+     * If an article is not sold out, its price is reduced by 10%.
+     * The updated articles are returned as a JSON string.
+     */
     public String changeArticleDiscount(File articlesDataIn) {
         try {
             ObjectMapper articleMapper = new ObjectMapper();
@@ -34,7 +39,6 @@ public class ArticleService {
                 }
             }
 
-            // Convertir la liste d'articlesOut en JSON
             return articleMapper.writeValueAsString(articlesOut);
         } catch (IOException e) {
             e.printStackTrace();

@@ -46,5 +46,5 @@
     <int:channel id="outputChannel" />
 
     <!-- Output channel adapter for writing JSON messages -->
-    <int-file:outbound-channel-adapter directory="dataOut\blueArticles" channel="outputChannel" />
+    <int-file:outbound-channel-adapter directory="dataOut/blueArticles" channel="outputChannel" />
 </beans>
