@@ -24,6 +24,9 @@ public class Main {
 
 		// Sql Database
 		// ApplicationContext ctx = new ClassPathXmlApplicationContext("sqlDatabase.xml");
+
+		// Webservice call
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("webservice.xml");
 	}
 }
  
