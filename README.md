@@ -14,4 +14,4 @@ In this project, which represents an eshop, we used different integration patter
 All you have to do is execute the function you want in main.java, uncomment it and see the result (depending on whether the result is in a file or not). 
 For more information, please read the report provided.
 
-**NB** : If you're testing the webservice.xml, make sure you pull the docker image from the given url and launch it by specifying the correct port. The default API is port 8080.
+**NB** : If you're testing the webservice.xml, make sure you pull the docker image from the given url (https://hub.docker.com/repository/docker/nathandoly/server/general) and launch it by specifying the correct port. The default API is port 8080.
